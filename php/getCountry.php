@@ -5,30 +5,33 @@ error_reporting(E_ALL);
 
 $executionStartTime = microtime(true) / 1000;
 
-$url = "countries_large.geo.json";
+$countryCode = $_REQUEST['countryCode'];
 
-$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+	$countryBorders = json_decode(file_get_contents("countryBorders.geo.json"), true);
 
-	$result=curl_exec($ch);
+	$border = null;
 
-	curl_close($ch);
+	foreach ($countryBorders['features'] as $feature) {
 
-	$decode = json_decode($result,true);	
+		if ($feature["properties"]['iso_a3'] == $countryCode) {
+
+			$border = $feature;
+			break;
+
+		}
+		
+	}
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
-	$output['status']['description'] = "mission saved";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = $decode['FeatureCollection'];
+	$output['status']['description'] = "success";
+	$output['status']['executedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+	$output['data'] = $border;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
-	echo json_encode($output);
+	echo json_encode($output); 
 
-
+ print_r($result['features'][0]['properties']); 
 
 ?>
-

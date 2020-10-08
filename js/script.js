@@ -20,12 +20,11 @@ navigator.geolocation.getCurrentPosition((position) => {
   ).addTo(mymap);
 });
 
-//This function popluates the select field, with all the countries of the world, reading this information from a json file.
-
 let $select = $("#countries");
 
 $.getJSON("countries/countries_small.geo.json", (data) => {
   $select.html("");
+
   // console.log(data);
   for (let i = 0; i < data["features"].length; i++) {
     $select.append(
@@ -37,19 +36,22 @@ $.getJSON("countries/countries_small.geo.json", (data) => {
   }
 });
 
-$.ajax({
-  url: "php/getCountry.php",
-  type: "POST",
-  dataType: "json",
-  data: {},
-  success: function (result) {
-    console.log(result);
-
-    if (result.status.name == "ok") {
-      console.log("result");
-    }
-  },
-  error: function (jqXHR, textStatus, errorThrown) {
-    // your error code
-  },
+let country = $("#countries").val();
+$("#countries").change(() => {
+  $.ajax({
+    url: "php/getCountry.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      countryCode: country,
+    },
+    success: function (result) {
+      if (result.status.name == "ok") {
+        console.log("We are here");
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("error");
+    },
+  });
 });

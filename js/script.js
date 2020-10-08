@@ -45,13 +45,13 @@ $("#countries").change(() => {
     data: {
       countryCode: country,
     },
-    success: function (result) {
+    success: (result) => {
       if (result.status.name == "ok") {
-        console.log("We are here");
+        console.log(result);
       }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log("error");
+    error: (jqXHR, textStatus, errorThrown) => {
+      console.log(result.status.name);
     },
   });
 });

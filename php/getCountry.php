@@ -32,6 +32,6 @@ $countryCode = $_REQUEST['countryCode'];
 
 	echo json_encode($output); 
 
- print_r($result['features'][0]['properties']); 
+ 
 
 ?>

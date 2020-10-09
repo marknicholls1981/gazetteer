@@ -25,7 +25,7 @@ let $select = $("#countries");
 $.getJSON("countries/countries_small.geo.json", (data) => {
   $select.html("");
 
-  // console.log(data);
+
   for (let i = 0; i < data["features"].length; i++) {
     $select.append(
       '<option value="' +
@@ -44,14 +44,16 @@ $("#countries").change(() => {
     dataType: "json",
     data: {
       countryCode: country,
+      
     },
+    
     success: (result) => {
       if (result.status.name == "ok") {
-        console.log(result);
+        console.log(result['data']);
       }
     },
     error: (jqXHR, textStatus, errorThrown) => {
-      console.log(result.status.name);
+      console.log('error');
     },
   });
 });

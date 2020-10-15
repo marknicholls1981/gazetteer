@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gazetteer</title>
     <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="./css/style.css" />
+    
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""
     />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -26,7 +28,47 @@
 
       <h2></h2>
     </header>
-    <div id="map" class="container-fluid"></div>
+
+    <div id="map" class="container-fluid">
+    </div>
+
+    <div class="container-fluid country-info">
+          <div class="row">
+
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <table id="information">
+<tr><td>Country : -</td><td id="country"></td></tr>
+<tr><td>Continent : -</td><td id="continent"></td></tr>
+<tr><td>Capital : -</td><td id="capital"></td></tr>
+<tr><td>Population : -</td><td id="population"></td></tr>
+
+
+
+
+              </table></div>
+              <div class="col-sm-4"></div>
+
+          </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+    
+
+
+     
+      
+      
+    
 
     <script src="vendors/jquery/jquery.min.js"></script>
     <script src="vendors/bootstrap/bootstrap.min.js"></script>

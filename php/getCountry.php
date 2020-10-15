@@ -13,7 +13,7 @@ $countryCode = $_REQUEST['countryCode'];
 
 	foreach ($countryBorders['features'] as $feature) {
 
-		if ($feature["properties"]['iso_a3'] == $countryCode) {
+		if ($feature["properties"]['iso_a2'] == $countryCode) {
 
 			$border = $feature;
 			break;

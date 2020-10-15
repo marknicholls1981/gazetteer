@@ -8,3 +8,25 @@
 header {
   text-align: center;
 }
+
+.country-info {
+  background-color: #2f8c23 !important;
+
+  width: 80%;
+}
+table,
+td {
+  font-weight: bold;
+  font-size: large;
+}
+body {
+  background-color: #2b566e;
+}
+
+header {
+  color: white;
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+}

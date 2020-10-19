@@ -3,19 +3,10 @@ const apiToken =
 
 let mymap = L.map('map').setView([0,0],1);
 let border;
-L.tileLayer(
-  "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=" +
-    apiToken,
-  {
-    attribution:
-      'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: "mapbox/streets-v11",
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: apiToken,
-  }
-).addTo(mymap);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(mymap);
 
 navigator.geolocation.getCurrentPosition((position) => {
   let lat = position.coords.latitude;
@@ -27,28 +18,36 @@ navigator.geolocation.getCurrentPosition((position) => {
 
   console.log(position)
 
-  
-
 });
-
-
 
 let $select = $("#countries");
 
 $.getJSON("php/countryBorders.geo.json", (data) => {
   $select.html("");
-
-  for (let i = 0; i < data["features"].length; i++) {
-    $select.append(
-      '<option value="' +
-        data["features"][i]['properties']["iso_a2"] +
-        '">' +
-        data["features"][i]["properties"]["name"]
-    );
-    
-  }
+  
+  const features = data["features"].sort((a,b) => {
+    return (
+      (a.properties.name < b.properties.name && -1) ||
+      (a.properties.name > b.properties.name && 1) ||
+      0
+    ); 
+  });
+  
+  features.forEach(feature => {
+    $select.append(`<option value="${feature.properties.iso_a2}">${feature.properties.name}</option>`);
+  });
 });
 
+
+//lookup country
+
+
+
+
+
+
+
+//------------------
 $("#countries").change(function() {
   $.ajax({
     url: "php/getCountry.php",

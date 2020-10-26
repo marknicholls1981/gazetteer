@@ -22,46 +22,77 @@
   </head>
   <body>
     <header>
-      <h1>Gazetteer</h1>
-      <label for="countries">Please Select a country</label>
+
+
+      <nav class="navbar navbar-expand-sm navbar-light gaznav fixed-top">
+        <div class="container-fluid">
+          <h2>Gazetteer</h2>
+
+        <button
+          class="navbar-toggler"
+          data-toggle="collapse"
+          data-target="#navbarMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarMenu" class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+               <label for="countries">Please Select a country</label>
       <select id="countries">
         
       </select>
+            </li>
+            <li class="nav-item"><button type="button" class="countryinfo" data-toggle="modal" data-target="#mymodal">Country Information
 
-      <h2></h2>
+            </button> 
+              
+            </li>
+           
+          </ul>
+        </div>
+
+
+        </div>
+       
+
+        
+      </nav>
+  
+     
+      
     </header>
 
     <div id="map" class="container-fluid">
-    </div>
+     <div class="modal fade" id="mymodal">
 
-    <div class="container-fluid country-info">
-          <div class="row">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header"><h2>Country Information</h2></div>
+          <div class="modal-body">
+            <table id="information">
+               <tr><td>Country : -</td><td id="country"></td></tr>
+                <tr><td>Continent : -</td><td id="continent"></td></tr> 
+                <tr><td>Capital : -</td><td id="capital"></td></tr>
+                <tr><td>Population : -</td><td id="population"></td></tr>
+ <tr><td>Further Information:- </td><td ><a href=""id="furtherinfo"></a></td></tr>             
+ <tr><td>Temperature:- </td><td id="temp" ></td></tr>             
+ <tr><td>Wind Direction:- </td><td id="wind" ></td></tr>             
+           
+              </table>
 
-              <div class="col-sm-4"></div>
-              <div class="col-sm-4">
-                <table id="information">
-            <tr><td>Country : -</td><td id="country"></td></tr>
-              <tr><td>Continent : -</td><td id="continent"></td></tr>
-              <tr><td>Capital : -</td><td id="capital"></td></tr>
-          <tr><td>Population : -</td><td id="population"></td></tr>
-
-
-
-
-              </table></div>
-              <div class="col-sm-4"></div>
 
           </div>
-
-
-
-
-
-
-
-
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+     </div>
 
     </div>
+
+    
 
 
     

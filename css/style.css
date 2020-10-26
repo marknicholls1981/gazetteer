@@ -1,32 +1,30 @@
+html,
+body,
 #map {
-  height: 500px;
-  width: 80%;
-  padding-top: 50px;
+  height: 100% !important;
+  width: 100% !important;
+
   text-align: center;
+  padding-top: 60px;
 }
 
-header {
-  text-align: center;
-}
-
-.country-info {
-  background-color: #2f8c23 !important;
-
-  width: 80%;
-}
-table,
-td {
-  font-weight: bold;
-  font-size: large;
-}
-body {
-  background-color: #2b566e;
-}
-
-header {
+.gaznav {
+  background-color: rgb(43, 86, 110);
   color: white;
 }
 
 * {
   font-family: "Poppins", sans-serif;
+}
+
+body {
+  padding-top: 70px;
+  padding: 0;
+  margin: 0;
+}
+table,
+td,
+tr {
+  text-align: left;
+  font-size: 1.2em;
 }

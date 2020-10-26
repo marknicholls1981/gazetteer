@@ -8,17 +8,43 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 
+
 navigator.geolocation.getCurrentPosition((position) => {
-  let lat = position.coords.latitude;
-  let lon = position.coords.longitude;
+  lat = position.coords.latitude;
+  lon = position.coords.longitude;
   let currentLocation = mymap.setView([lat, lon], 7);
   
   let marker = L.marker([lat,lon]).addTo(mymap)
   let popup = L.popup().setLatLng([lat,lon]).setContent("You are here").openOn(mymap)
 
-  console.log(position)
+  let countryCode;
+  
+  $.ajax({
+    url: "php/getLocation.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      lat: lat,
+      lon: lon
+    },
+    success: function(result) {
+
+      
+      if (result.status.name == "ok") {                    
+       
+      countryCode = result['data']
+            
+       
+      }
+    
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      
+    }
+  })
 
 });
+
 
 let $select = $("#countries");
 
@@ -38,16 +64,6 @@ $.getJSON("php/countryBorders.geo.json", (data) => {
   });
 });
 
-
-//lookup country
-
-
-
-
-
-
-
-//------------------
 $("#countries").change(function() {
   $.ajax({
     url: "php/getCountry.php",
@@ -64,7 +80,8 @@ $("#countries").change(function() {
           mymap.removeLayer(border);
         }
         border = L.geoJson(result.data).addTo(mymap);
-        mymap.fitBounds(border.getBounds());  
+        mymap.fitBounds(border.getBounds()); 
+        
         $.ajax({
           url: "php/countryInfo.php",
           type: 'POST',
@@ -72,17 +89,73 @@ $("#countries").change(function() {
           data: {
             country: $("#countries").val(),
           },
+          
           success: function(result) {
     
-            console.log(result);
             if (result.status.name == "ok") {                    
-             console.log(result['data'])
+         
+             console.log(result)
              
-             
-              city = $('#capital').html(result['data'][0]['capital']);
+              $('#capital').html(result['data'][0]['capital']);
               $('#country').html(result['data'][0]['countryName']);
               $('#population').html(result['data'][0]['population']);
               $('#continent').html(result['data'][0]['continentName']);
+              let city = $('#capital').text()
+              let currencyCode = result['data'][0]['currencyCode']
+              console.log(currencyCode)
+                       
+              
+              $.ajax({
+
+                url:"php/getwikiinfo.php",
+                type:'POST',
+                dataType: 'json',
+                data:{
+              
+                  city : city
+              
+                },
+                success: function(result){
+              
+                  console.log(result);
+                  if(result.status.name == "ok"){
+                    
+                    $("#furtherinfo").attr("href", result['data'][0]['wikipediaUrl']);
+                    $('#furtherinfo').html(result['data'][0]['wikipediaUrl'])
+                    let lat = result['data'][0]['lat']
+                    let lon = result['data'][0]['lng']
+                    console.log(lat, lon);                    
+                  }
+              
+              
+                }
+              })
+              $.ajax({
+
+                url: "php/getWeatherInfo.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                  lat: lat,
+                  lon:lon
+                },
+                success: function (result) {
+                  console.log(result);
+            
+                  if (result.status.name == "ok") {
+                    $("#temp").html(result["data"]["temperature"]);
+                    $("#wind").html(result["data"]["windDirection"]);
+                    
+                  }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log("Error");
+                  // your error code
+                },
+              });
+
+             
+                            
              
              
             }
@@ -91,6 +164,8 @@ $("#countries").change(function() {
           error: function(jqXHR, textStatus, errorThrown) {
             // your error code
           }
+
+        
         }); 
           }
     },
@@ -102,5 +177,9 @@ $("#countries").change(function() {
 
 
 });
+
+
+
+
 
 

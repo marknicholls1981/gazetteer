@@ -94,7 +94,7 @@ $("#countries").change(function() {
     
             if (result.status.name == "ok") {                    
          
-             console.log(result)
+             
              
               $('#capital').html(result['data'][0]['capital']);
               $('#country').html(result['data'][0]['countryName']);
@@ -117,17 +117,19 @@ $("#countries").change(function() {
                 },
                 success: function(result){
               
-                  console.log(result);
+                
                   if(result.status.name == "ok"){
                     
-                    $("#furtherinfo").attr("href", result['data'][0]['wikipediaUrl']);
+                    $("#furtherinfo").attr("href", `https://${result['data'][0]['wikipediaUrl']}`);
                     $('#furtherinfo').html(result['data'][0]['wikipediaUrl'])
                     let lat = result['data'][0]['lat']
                     let lon = result['data'][0]['lng']
-                    console.log(lat, lon);                    
+                                     
                   }
               
-              
+                 
+
+
                 }
               })
               $.ajax({
@@ -140,11 +142,11 @@ $("#countries").change(function() {
                   lon:lon
                 },
                 success: function (result) {
-                  console.log(result);
+                
             
                   if (result.status.name == "ok") {
-                    $("#temp").html(result["data"]["temperature"]);
-                    $("#wind").html(result["data"]["windDirection"]);
+                    $("#temp").html(`${result["data"]["temperature"]}°`);
+                    $("#wind").html(`${result["data"]["windDirection"]}°`);
                     
                   }
                 },

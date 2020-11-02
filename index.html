@@ -19,6 +19,7 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
   </head>
   <body>
     <header>
@@ -38,16 +39,11 @@
         <div id="navbarMenu" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-               <label for="countries">Please Select a country</label>
-      <select id="countries">
-        
+               
+      <select id="countries" class="custom-select">       
       </select>
             </li>
-            <li class="nav-item"><button type="button" class="countryinfo" data-toggle="modal" data-target="#mymodal">Country Information
-
-            </button> 
-              
-            </li>
+           
            
           </ul>
         </div>
@@ -63,46 +59,49 @@
       
     </header>
 
+
+    
+              
+    
+  
+
     <div id="map" class="container-fluid">
-     <div class="modal fade" id="mymodal">
 
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header"><h2>Country Information</h2></div>
-          <div class="modal-body">
-            <table id="information">
-               <tr><td>Country : -</td><td id="country"></td></tr>
-                <tr><td>Continent : -</td><td id="continent"></td></tr> 
-                <tr><td>Capital : -</td><td id="capital"></td></tr>
-                <tr><td>Population : -</td><td id="population"></td></tr>
- <tr><td>Further Information:- </td><td ><a href=""id="furtherinfo" target="_blank"></a></td></tr>             
- <tr><td>Temperature:- </td><td id="temp" ></td></tr>             
- <tr><td>Wind Direction:- </td><td id="wind" ></td></tr>             
+       
+      
+      <div class="modal fade" id="mymodal">
+        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                            <div class="modal-header"><h2>Country Information</h2></div>
+                              <div class="modal-body">
+                              <table id="information">
+                                <tr><td>Country : -</td><td id="country"></td></tr>
+                                <tr><td>Continent : -</td><td id="continent"></td></tr> 
+                                <tr><td>Capital : -</td><td id="capital"></td></tr>
+                                  <tr><td>Population : -</td><td id="population"></td></tr>
+                                    <tr><td>Summary:- </td><td id="summary"></a></td></tr>             
+                                    <tr><td>Further Information:- </td><td ><a href=""id="furtherinfo" target="_blank"></a></td></tr>             
+                                    <tr><td>Temperature:- </td><td id="temp" ></td></tr>             
+                                    <tr><td>Wind Direction:- </td><td id="wind" ></td></tr>         
+                                           
            
-              </table>
+                                    </table>
+                                    <img src="" id="landmark" alt="" width="100" height="100">
 
 
-          </div>
-          <div class="modal-footer">
-            <button type="button" data-dismiss="modal">Close</button>
-          </div>
+                                          </div>
+                                      <div class="modal-footer">
+                                      <button type="button" data-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                              </div>
+                </div>
+
+            
         </div>
-      </div>
-     </div>
-
-    </div>
-
     
-
-
     
-
-
-     
-      
-      
-    
-
     <script src="vendors/jquery/jquery.min.js"></script>
     <script src="vendors/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>

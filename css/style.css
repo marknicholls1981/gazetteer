@@ -9,8 +9,9 @@ body,
 }
 
 .gaznav {
-  background-color: rgb(43, 86, 110);
+  background-color: #4783cc;
   color: white;
+  box-shadow: 0.2em 0.2em 0.1em #b53fe8;
 }
 
 * {
@@ -27,4 +28,19 @@ td,
 tr {
   text-align: left;
   font-size: 1.2em;
+}
+
+.leaflet-tooltip {
+  position: absolute;
+  padding: 0px;
+  background-color: #fff;
+
+  border-radius: 3px;
+  color: #222;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }

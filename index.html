@@ -14,11 +14,14 @@
     />
     <link rel="stylesheet" href="./css/style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./vendors/Leaflet.EasyButton-master/src/easy-button.css">
+    
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
+    <script src="vendors/Leaflet.EasyButton-master/src/easy-button.js"></script>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png">
   </head>
   <body>
@@ -74,7 +77,7 @@
 
                             <div class="modal-content">
                             <div class="modal-header"><h2>Country Information</h2></div>
-                              <div class="modal-body">
+                              <div class="modal-body info">
                               <table id="information">
                                 <tr><td>Country : -</td><td id="country"></td></tr>
                                 <tr><td>Continent : -</td><td id="continent"></td></tr> 
@@ -98,12 +101,15 @@
                                               </div>
                 </div>
 
-            
+                
         </div>
+        Icons made by <a href="https://www.flaticon.com/authors/flat-icons" title="Flat Icons">Flat Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     
     
     <script src="vendors/jquery/jquery.min.js"></script>
     <script src="vendors/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
+    
+    
   </body>
 </html>

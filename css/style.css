@@ -11,7 +11,7 @@ body,
 .gaznav {
   background-color: #4783cc;
   color: white;
-  box-shadow: 0.2em 0.2em 0.1em #b53fe8;
+  box-shadow: 0px 1px 10px #999;
 }
 
 * {
@@ -43,4 +43,9 @@ tr {
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.info {
+  height: 90vh;
+  overflow-y: scroll;
 }

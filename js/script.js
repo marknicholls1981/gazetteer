@@ -2,13 +2,15 @@
 const apiToken =
   "pk.eyJ1IjoiY3VzeDE5ODEiLCJhIjoiY2tmZTN1d2VzMDE5MDJ6cGVlcHVvbzV1dCJ9.nhmqapMZZRVeMQZXFOkAQA";
 
-let mymap = L.map('map').setView([0,0],1);
+let mymap = L.map('map').setView([0, 0], 1);
 let border;
 let marker;
 let tooltip;
+let capitalButton;
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 
 
@@ -17,11 +19,9 @@ navigator.geolocation.getCurrentPosition((position) => {
   lon = position.coords.longitude;
   let currentLocation = mymap.setView([lat, lon], 7);
   console.log(position)
-  
-  
 
   let countryCode;
-  
+
   $.ajax({
     url: "php/getLocation.php",
     type: 'POST',
@@ -30,75 +30,82 @@ navigator.geolocation.getCurrentPosition((position) => {
       lat: lat,
       lon: lon
     },
-    success: function(result) {
+    success: function (result) {
 
-      
-      if (result.status.name == "ok") {   
+      if (result.status.name == "ok") {
+
+        let currentLocationBorder = $('#countries').val(result).change()
         
 
-        
-       
-        
-              
-       
       }
-    
+
     },
-    error: function(jqXHR, textStatus, errorThrown) {
-      
+    error: function (jqXHR, textStatus, errorThrown) {
+
     }
   })
 
 });
-
 
 let $select = $("#countries");
 
 $.getJSON("php/countryBorders.geo.json", (data) => {
   $select.html("");
   $select.append(`<option value="make_selection"selected disabled> Select a country</option>`);
-  
-  const features = data["features"].sort((a,b) => {
+
+  const features = data["features"].sort((a, b) => {
     return (
       (a.properties.name < b.properties.name && -1) ||
       (a.properties.name > b.properties.name && 1) ||
       0
-    ); 
+    );
   });
-  
+
   features.forEach(feature => {
     $select.append(`<option value="${feature.properties.iso_a2}">${feature.properties.name}</option>`);
   });
 });
 
-$("#countries").change(function() {
+$("#countries").change(function () {
+
   $.ajax({
     url: "php/getCountry.php",
     type: "POST",
     dataType: "json",
     data: {
-      countryCode: $("#countries").val(),   
+      countryCode: $("#countries").val(),
     },
     success: (result) => {
       if (result.status.name == "ok") {
-              
-        
-              if (mymap.hasLayer(border)){
+
+
+        if (mymap.hasLayer(border)) {
           mymap.removeLayer(border);
+        }
+        if (mymap.hasLayer(capitalButton)) {
+          mymap.removeLayer(capitalButton);
         }
 
         let myStyle = {
           "color": " #b53fe8",
           "weight": 8,
           "opacity": 0.2
-      };
-        border = L.geoJson(result.data, {
-          style: myStyle
-        }).addTo(mymap)
-        mymap.fitBounds(border.getBounds());
+        };
+        if (result.data != null) {
+
+          border = L.geoJson(result.data, {
+            style: myStyle
+          }).addTo(mymap)
+          mymap.fitBounds(border.getBounds());
+          console.log(border)
+
+        }
+        else {
+          alert("Border not available for current location")
+          $('#countries').val('make_selection')
+        }
 
 
-        
         $.ajax({
           url: "php/countryInfo.php",
           type: 'POST',
@@ -106,43 +113,36 @@ $("#countries").change(function() {
           data: {
             country: $("#countries").val(),
           },
-          
-          success: function(result) {
-    
-            if (result.status.name == "ok") {     
-              
-              // border.bindTooltip('<button type ="button" class="countryinfo" data-toggle="modal" data-target="#mymodal">More Details</button>',{permanent:true}).addTo(mymap)
-                         
-         
-                          
+
+          success: function (result) {
+
+            if (result.status.name == "ok") {
+
               $('#capital').html(result['data'][0]['capital']);
               $('#country').html(result['data'][0]['countryName']);
               $('#population').html(result['data'][0]['population']);
               $('#continent').html(result['data'][0]['continentName']);
               let city = $('#capital').text()
               let currencyCode = result['data'][0]['currencyCode']
-             
+
               console.log(currencyCode)
               console.log(city)
-              
-                       
-              
+
               $.ajax({
 
-                url:"php/getwikiinfo.php",
-                type:'POST',
+                url: "php/getwikiinfo.php",
+                type: 'POST',
                 dataType: 'json',
-                data:{
-              
-                  city : city
-              
+                data: {
+
+                  city: city
+
                 },
-                success: function(result){
+                success: function (result) {
                   console.log(result['data'])
-              
-                
-                  if(result.status.name == "ok"){
-                    
+
+                  if (result.status.name == "ok") {
+
                     $("#furtherinfo").attr("href", `https://${result['data'][0]['wikipediaUrl']}`);
                     let url = result['data'][0]['wikipediaUrl']
                     let lat = result['data'][0]['lat']
@@ -152,22 +152,17 @@ $("#countries").change(function() {
                     $("#furtherinfo").html(url);
                     $('#landmark').attr("src", `${result['data'][0]['thumbnailImg']}`)
                     console.log(lat, summary)
-                    if (mymap.hasLayer(marker)){
-                      mymap.removeLayer(marker);
-                    }
+                    const capitalPopup = L.popup().setContent(`${city}`);
 
-                       marker = L.marker([lat,lon]).addTo(mymap).bindTooltip(` <button type="button" class="countryinfo" data-toggle="modal" data-target="#mymodal">Country Information
-
-                       </button>`,{permanent:true, interactive:true}).openPopup();
-                      // tooltip = L.tooltip(pane, permanent).addTo(mymap)
-                   
+                    capitalButton = L.easyButton('./images/raining.png', function (btn, map) {
+                      capitalPopup.setLatLng([lat, lon]).openOn(map);
+                    }).addTo(mymap);
 
 
-                                     
+
+
+
                   }
-              
-                 
-
 
                 }
               })
@@ -178,44 +173,35 @@ $("#countries").change(function() {
                 dataType: "json",
                 data: {
                   lat: lat,
-                  lon:lon
+                  lon: lon
                 },
                 success: function (result) {
-                
-            
+
                   if (result.status.name == "ok") {
                     $("#temp").html(`${result["data"]["temperature"]}°`);
                     $("#wind").html(`${result["data"]["windDirection"]}°`);
-                    
+
                   }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                   console.log("Error");
-                  // your error code
+
                 },
               });
 
-             
-                            
-             
-             
             }
-          
           },
-          error: function(jqXHR, textStatus, errorThrown) {
-            // your error code
+          error: function (jqXHR, textStatus, errorThrown) {
+
           }
 
-        
-        }); 
-          }
+        });
+      }
     },
     error: (jqXHR, textStatus, errorThrown) => {
       console.log('error');
     },
-}); 
-
-
+  });
 
 });
 

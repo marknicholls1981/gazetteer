@@ -23,6 +23,7 @@
     ></script>
     <script src="vendors/Leaflet.EasyButton-master/src/easy-button.js"></script>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   </head>
   <body>
     <header>
@@ -69,30 +70,23 @@
   
 
     <div id="map" class="container-fluid">
-
+      
        
       
-      <div class="modal fade" id="mymodal">
-        <div class="modal-dialog modal-lg">
+      <div class="modal fade" id="weathermodal">
+        <div class="modal-dialog modal-sm">
 
                             <div class="modal-content">
-                            <div class="modal-header"><h2>Country Information</h2></div>
+                            <div class="modal-header"><h2>Current weather</h2></div>
                               <div class="modal-body info">
                               <table id="information">
-                                <tr><td>Country : -</td><td id="country"></td></tr>
-                                <tr><td>Continent : -</td><td id="continent"></td></tr> 
-                                <tr><td>Capital : -</td><td id="capital"></td></tr>
-                                  <tr><td>Population : -</td><td id="population"></td></tr>
-                                    <tr><td>Summary:- </td><td id="summary"></a></td></tr>             
-                                    <tr><td>Further Information:- </td><td ><a href=""id="furtherinfo" target="_blank"></a></td></tr>             
+                                          
                                     <tr><td>Temperature:- </td><td id="temp" ></td></tr>             
                                     <tr><td>Wind Direction:- </td><td id="wind" ></td></tr>         
                                            
            
                                     </table>
-                                    <img src="" id="landmark" alt="" width="100" height="100">
-
-
+                                  
                                           </div>
                                       <div class="modal-footer">
                                       <button type="button" data-dismiss="modal">Close</button>
@@ -103,7 +97,36 @@
 
                 
         </div>
-        Icons made by <a href="https://www.flaticon.com/authors/flat-icons" title="Flat Icons">Flat Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+
+
+        <div class="modal fade" id="infomodal">
+          <div class="modal-dialog modal-lg">
+  
+                              <div class="modal-content">
+                              <div class="modal-header"><h2>Information</h2></div>
+                                <div class="modal-body info">
+                                <table id="information">
+                                  <tr><td class="summary">Summary : - </td><td id="summary"></td></tr>    
+                                  <tr><td class="summary">More Info : -</td><td><a href="" id="furtherinfo" target ="_blank"></a></td></tr>    
+                                            
+                                              
+                                             
+             
+                                      </table>
+                                    
+                                            </div>
+                                        <div class="modal-footer">
+                                        <button type="button" data-dismiss="modal">Close</button>
+                                          </div>
+                                          </div>
+                                                </div>
+                  </div>
+  
+                  
+          </div>
+
+        
     
     
     <script src="vendors/jquery/jquery.min.js"></script>

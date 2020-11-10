@@ -46,6 +46,34 @@ tr {
 }
 
 .info {
-  height: 90vh;
+  height: auto;
   overflow-y: scroll;
+}
+.weather {
+  object-fit: cover;
+  height: 25px;
+  width: 18px;
+}
+.summary {
+  white-space: nowrap;
+}
+.modal-content {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #007bff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+  height: auto !important;
+  opacity: 0.8;
+  color: white;
+}
+a {
+  color: darkblue;
 }

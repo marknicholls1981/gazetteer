@@ -6,22 +6,29 @@ let mymap = L.map('map').setView([0, 0], 1);
 let border;
 let marker;
 let tooltip;
-let capitalButton;
+let weatherButton;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
 
+weatherButton = L.easyButton('<i class="fas fa-cloud-sun"></i>', function () {
+  $("#weathermodal").modal("show");
+}, 'weatherbutton').addTo(mymap);
+
+infoButton = L.easyButton('<i class="fas fa-info"></i>', function () {
+  $("#infomodal").modal("show");
+}, 'infobutton').addTo(mymap);
+
+let lat;
+let lon;
 
 navigator.geolocation.getCurrentPosition((position) => {
   lat = position.coords.latitude;
   lon = position.coords.longitude;
-  let currentLocation = mymap.setView([lat, lon], 7);
-  console.log(position)
-
-  let countryCode;
-
+  mymap.setView([lat, lon], 7);
+ 
   $.ajax({
     url: "php/getLocation.php",
     type: 'POST',
@@ -34,7 +41,10 @@ navigator.geolocation.getCurrentPosition((position) => {
 
       if (result.status.name == "ok") {
 
-        let currentLocationBorder = $('#countries').val(result).change()
+        $('#countries').val(result.data).change()
+        console.log(result.data)
+
+        
         
 
       }
@@ -61,6 +71,10 @@ $.getJSON("php/countryBorders.geo.json", (data) => {
     );
   });
 
+  
+
+
+
   features.forEach(feature => {
     $select.append(`<option value="${feature.properties.iso_a2}">${feature.properties.name}</option>`);
   });
@@ -82,9 +96,7 @@ $("#countries").change(function () {
         if (mymap.hasLayer(border)) {
           mymap.removeLayer(border);
         }
-        if (mymap.hasLayer(capitalButton)) {
-          mymap.removeLayer(capitalButton);
-        }
+       
 
         let myStyle = {
           "color": " #b53fe8",
@@ -117,16 +129,14 @@ $("#countries").change(function () {
           success: function (result) {
 
             if (result.status.name == "ok") {
+              
 
-              $('#capital').html(result['data'][0]['capital']);
+              let city = result['data'][0]['capital'];
               $('#country').html(result['data'][0]['countryName']);
               $('#population').html(result['data'][0]['population']);
               $('#continent').html(result['data'][0]['continentName']);
-              let city = $('#capital').text()
               let currencyCode = result['data'][0]['currencyCode']
-
-              console.log(currencyCode)
-              console.log(city)
+            
 
               $.ajax({
 
@@ -139,7 +149,7 @@ $("#countries").change(function () {
 
                 },
                 success: function (result) {
-                  console.log(result['data'])
+                  console.log(result.data)
 
                   if (result.status.name == "ok") {
 
@@ -152,16 +162,12 @@ $("#countries").change(function () {
                     $("#furtherinfo").html(url);
                     $('#landmark').attr("src", `${result['data'][0]['thumbnailImg']}`)
                     console.log(lat, summary)
-                    const capitalPopup = L.popup().setContent(`${city}`);
-
-                    capitalButton = L.easyButton('./images/raining.png', function (btn, map) {
-                      capitalPopup.setLatLng([lat, lon]).openOn(map);
-                    }).addTo(mymap);
+                   
 
 
-
-
-
+                  }
+                  else{
+                    alert("Further information not avaivle.")
                   }
 
                 }
@@ -182,6 +188,8 @@ $("#countries").change(function () {
                     $("#wind").html(`${result["data"]["windDirection"]}°`);
 
                   }
+
+                  
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                   console.log("Error");
@@ -204,9 +212,3 @@ $("#countries").change(function () {
   });
 
 });
-
-
-
-
-
-

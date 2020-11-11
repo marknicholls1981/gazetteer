@@ -46,8 +46,9 @@ tr {
 }
 
 .info {
-  height: auto;
+  height: 90vh;
   overflow-y: scroll;
+  font-size: 0.25;
 }
 .weather {
   object-fit: cover;
@@ -73,7 +74,19 @@ tr {
   height: auto !important;
   opacity: 0.8;
   color: white;
+  font-size: 0.75rem;
+}
+
+.leaflet-container a {
+  color: darkblue;
 }
 a {
-  color: darkblue;
+  color: darkblue !important;
+}
+.newslink {
+  font-size: 1.5rem !important;
+}
+
+.weathermodal {
+  height: auto;
 }

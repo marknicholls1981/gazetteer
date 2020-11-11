@@ -67,7 +67,7 @@
     
               
     
-  
+    
 
     <div id="map" class="container-fluid">
       
@@ -77,17 +77,20 @@
         <div class="modal-dialog modal-sm">
 
                             <div class="modal-content">
-                            <div class="modal-header"><h2>Current weather</h2></div>
+                            <div class="modal-header"><h2>Current weather for <span class="city"></span> on <span class="date"></span></h2></div>
                               <div class="modal-body info">
                               <table id="information">
-                                          
+
+                                
+                                                               
+                                         <img class="weathericon"> 
                                     <tr><td>Temperature:- </td><td id="temp" ></td></tr>             
                                     <tr><td>Wind Direction:- </td><td id="wind" ></td></tr>         
+                                    <tr><td>Description:- </td><td id="weatherdescription" ></td></tr>         
                                            
            
                                     </table>
                                   
-                                          </div>
                                       <div class="modal-footer">
                                       <button type="button" data-dismiss="modal">Close</button>
                                         </div>
@@ -107,8 +110,14 @@
                               <div class="modal-header"><h2>Information</h2></div>
                                 <div class="modal-body info">
                                 <table id="information">
+
+                                  <tr><td class="summary">Country : - </td><td id="country"></td></tr>  
+                                  <img class="flag">  
+                                  <tr><td class="summary">Capital : - </td><td id="capital"></td></tr>    
+                                  <tr><td class="summary">Population : - </td><td id="population"></td></tr>    
+                                  <tr><td class="summary">Continent : - </td><td id="continent"></td></tr>    
                                   <tr><td class="summary">Summary : - </td><td id="summary"></td></tr>    
-                                  <tr><td class="summary">More Info : -</td><td><a href="" id="furtherinfo" target ="_blank"></a></td></tr>    
+                                  <tr><td class="summary">More Info : -</td><td id="moreinfo"><a href="" id="furtherinfo" target ="_blank"></a></td></tr>    
                                             
                                               
                                              
@@ -125,6 +134,36 @@
   
                   
           </div>
+
+
+
+          <!-- news modal -->
+
+          <div class="modal fade" id="newsmodal">
+            <div class="modal-dialog modal-lg">
+    
+                                <div class="modal-content">
+                                <div class="modal-header"><h2>Latest News</h2></div>
+                                  <div class="modal-body weathermodal">
+                                    <h2 class="headline"></h2>
+                                    
+                                    <a class="newsimagelink" target="_blank"><img class="newsimagelink" style="width:50px;height:50px;"></a>
+                                 
+                                    <a class="newslink" target="_blank"></a>
+                              
+                                      
+                                              </div>
+                                          <div class="modal-footer">
+                                          <button type="button" data-dismiss="modal">Close</button>
+                                            </div>
+                                            </div>
+                                                  </div>
+                    </div>
+    
+                    
+            </div>
+
+
 
         
     

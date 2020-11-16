@@ -6,6 +6,7 @@ let border;
 let marker;
 let tooltip;
 let weatherButton;
+let ratesButton;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -24,6 +25,11 @@ newsButton = L.easyButton('<i class="far fa-newspaper"></i>', function() {
   $('#newsmodal').modal("show");
 },
   'Latest News').addTo(mymap)
+
+ratesButton = L.easyButton('<i class="fas fa-dollar-sign"></i>', function() {
+    $("#ratesmodal").modal("show");
+  },
+    'Exchange Rates').addTo(mymap)
 
 
 let lat;
@@ -46,7 +52,8 @@ navigator.geolocation.getCurrentPosition((position) => {
 
       if (result.status.name == "ok") {
 
-        $('#countries').val(result.data).change()      
+        $('#countries').val(result.data).change()    
+        
       }
   
       
@@ -58,9 +65,13 @@ navigator.geolocation.getCurrentPosition((position) => {
 });
 
 let $select = $("#countries");
+let $articles = $("#articles");
+let $weatherinfo = $('#weatherinfo')
+
+let $rates = $("#rates");
 
 $.getJSON("php/countryBorders.geo.json", (data) => {
-  $select.html("");
+ 
   $select.append(`<option value="make_selection"selected disabled> Select a country</option>`);
 
   const features = data["features"].sort((a, b) => {
@@ -77,6 +88,7 @@ $.getJSON("php/countryBorders.geo.json", (data) => {
 });
 
 $("#countries").change(function () {
+  $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
 
   $.ajax({
     url: "php/getCountry.php",
@@ -99,11 +111,13 @@ $("#countries").change(function () {
           "opacity": 0.2
         };
         if (result.data != null) {
+          //console.log(result)
 
           border = L.geoJson(result.data, {
             style: myStyle
           }).addTo(mymap)
           mymap.fitBounds(border.getBounds());
+         
 
         }
         else {
@@ -120,29 +134,31 @@ $("#countries").change(function () {
           },
 
           success: function (result) {
+          
+            
 
             if (result.status.name == "ok") {
-              $('.headline').html("Not available in this region")
-              
-              $('.newslink').removeAttr('href')
-              $('.newslink').html("not available in this region")
-           
-              $("#summary").html('Information currently not available');
-              $("#furtherinfo").html('Information currently not available');
-              $("#furtherinfo").removeAttr("href");
-              $('.newsimagelink').removeAttr('src')
-              $('.newsimagelink').removeAttr('href')
-              $('.newsimagelink').attr("alt", "No Image available.")
+              //console.log(result)
+              //console.log($("#countries").val())
 
+              $("#summary").html('Unavailable');
+              $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
+             
+              
+              $("#furtherinfo").removeAttr("href");
+              $("#furtherinfo").html("Unavailable").css("color", "black !important");
+                                     
               $('#capital').html(result['data'][0]['capital']);
               $('#country').html(result['data'][0]['countryName']);
               $('#population').html(result['data'][0]['population']);
               $('#continent').html(result['data'][0]['continentName']);
               let flagcode = $("#countries").val()
-              $('.flag').attr("src", `https://www.countryflags.io/${flagcode}/flat/64.png`)
+              $('.flag').attr("src", `https://www.countryflags.io/${flagcode}/shiny/64.png`)
 
               let currencyCode = result['data'][0]['currencyCode']
               let city = $('#capital').html(result['data'][0]['capital']).text();
+
+              
 
               $.ajax({
 
@@ -154,22 +170,32 @@ $("#countries").change(function () {
                   city: city
                 },
                 success: function (result) {
+
+                
                   
                   if (result.status.name == "ok") {
                  
                     let info_array = result.data
-                       
-                     for(i=0; i < info_array.length; i++){
-                       if(info_array[i]['countryCode'] ===  $('#countries').val() )
-                       
-                       {$("#summary").html(info_array[i]['summary']);
-                       $("#furtherinfo").attr("href", `https://${info_array[i]['wikipediaUrl']}`);
-                       $("#furtherinfo").html(info_array[i]['wikipediaUrl']);
-                       let weatherlat = result['data'][i]['lat']
-                                            
+                    let weatherlat;
+                    let weatherlon;
+
+                    //console.log(info_array)
+
+                   
+                   
+                        for(i=0; i < info_array.length; i++){
+                          if(info_array[i]['countryCode'] ===  $('#countries').val() )
+                          
+                          {$("#summary").html(info_array[i]['summary']);
+                          $("#furtherinfo").attr("href", `https://${info_array[i]['wikipediaUrl']}`);
+                          $("#furtherinfo").html(info_array[i]['wikipediaUrl']);
+                          weatherlat = result['data'][i]['lat']
+                                               
+                         
+                 
+                       weatherlon = result['data'][i]['lng']
                       
-              
-                    let weatherlon = result['data'][i]['lng']
+                    
                    
                     $.ajax({
 
@@ -180,10 +206,9 @@ $("#countries").change(function () {
                         lat: weatherlat,
                         lon: weatherlon
                       },
-                      success: function (result) {
-
-                        
-              
+                      success: function (result) {  
+                        $weatherinfo.html("")
+                                
       
                         if (result.status.name == "ok") {
                           const now = new Date()
@@ -191,26 +216,137 @@ $("#countries").change(function () {
                           const month = now.getMonth()
                           const day = now.getDay()
                           const date = now.getDate()
-                         let todaysDate = `${currentYear}-${month+1}-${date} `
+                         let todaysDate = `${day}-${date}-${month+1}-${currentYear}`
                          let city = result.data.city['name']
+                         //console.log(todaysDate)
                          $(".city").html(city)
 
                         $(".date").html(`${now.toDateString()}`)
                          weatherList = result.data.list
-                 
-                         for(i=0; i<weatherList.length;i++){
-                          let date = weatherList[i]['dt']
-                          let weathericon = weatherList[0]['weather'][0]['icon']
-                          let weatherdescription = weatherList[0]['weather'][0]['description']
-                          let windDirection = weatherList[0]['wind']['deg']
-                          let temperature = weatherList[0]['main']['temp']
-                          $('#temp').html(`${temperature}°`)
-                          $('.weathericon').attr("src", `http://openweathermap.org/img/wn/${weathericon}@2x.png`)
-                          $('#weatherdescription').html(weatherdescription)
-                          $('#wind').html(`${windDirection}°`)
+                         console.log(weatherList)
+
+                         if (weatherList < 1){
+                          $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
 
 
                          }
+                                          
+                         else{
+                          {
+                            for(i=0; i<weatherList.length;i++){
+                              let theDate = new Date(weatherList[i]['dt_txt'])
+                           
+
+                            
+
+
+
+let month;
+let day;
+
+switch(theDate.getDay()){
+  case 0:
+    day = "Sunday";
+    break;
+  case 1:
+    day = "Monday";
+    break;
+  case 2:
+     day = "Tuesday";
+    break;
+  case 3:
+    day = "Wednesday";
+    break;
+  case 4:
+    day = "Thursday";
+    break;
+  case 5:
+    day = "Friday";
+    break;
+  case 6:
+    day = "Saturday";
+
+}
+switch(theDate.getMonth()){
+  case 0:
+    month = "January";
+    break;
+  case 1:
+    month = "February";
+    break;
+  case 2:
+     month = "March";
+    break;
+  case 3:
+    month = "April";
+    break;
+  case 4:
+    month = "May";
+    break;
+  case 5:
+    month = "June";
+    break;
+  case 6:
+    month = "July";
+    case 7:
+      month = "August";
+      break;
+    case 8:
+      month = "September";
+      break;
+    case 9:
+       month = "October";
+      break;
+    case 10:
+      month = "November";
+      break;
+    case 11:
+      month = "Decembet";
+    
+
+}
+
+
+
+
+
+
+$weatherinfo.append( ` 
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-sm-12 weatherrow">
+<table id="information weathertable">                              
+<tr><td>${day} ${theDate.getDate()} ${month} ${theDate.getHours()}:${theDate.getMinutes()}${theDate.getSeconds()}</td><td><img class="weathericon" src ="http://openweathermap.org/img/wn/${weatherList[i]['weather'][0]['icon']}@2x.png"></td> 
+
+
+
+
+<td id="temp" >${weatherList[i]['main']['temp']}°</td>           
+    
+<td></td><td id="weatherdescription" >${weatherList[i]['weather'][0]['description']}</td> 
+</tr>      
+  
+
+</table>
+</div>
+</div>
+</div>
+
+`)
+                            }
+
+
+
+                                         
+  
+  
+                           }
+
+                         }
+                       
+                       
                          $.ajax({
 
                           url: "php/news.php",
@@ -220,19 +356,56 @@ $("#countries").change(function () {
                             country: $('#countries').val()
                           },
                           success: function (result) {
-                            let news = result.data[0]
-                  
-                            let headline = news['title']
-                            let newsLink = news['url']
-                            let newsImageLink = news['urlToImage']
+                            let news = result.data
+                            //console.log(news)
+                            $articles.html("")
+                           if (news.length < 1){
+
+                            $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
+                           }
+                           else{
+                            for (i=0;i<10;i++){
+                              
+                              
+                              $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news"><a class="newsimagelink" src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:308px;height:173px;" alt="No Image Available"></a></div>
+                            
+                              <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a><p>${news[i]['description']}</p></div></div>`)
+
+
+
+                            }
+
+
+
+                           }   
+                           $.ajax({
+
+                            url: "php/exchangerates.php",
+                            type: "POST",
+                            dataType: "json",
+                            data: {
+                              currencycode: currencyCode
+                            },
+                            success: function (result) {
+                              let rates = result.data.rates
+                              console.log(rates)
+                              //console.log($('#country').text())
+                              $rates.html(rates)
+
+                             
+                             
+                             
+                      
                     
-                            $('.headline').html(headline)
-                            $('.newsimagelink').attr('src', newsImageLink)
-                            $('.newsimagelink').attr('href', newsImageLink)
-                            $('.newslink').attr('href', newsLink)
-                            $('.newslink').html(newsLink)
-                  
-                        
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                              console.log("Error");
+                    
+                            },
+                          });
+                           
+                         
+                    
                   
                           },
                           error: function (jqXHR, textStatus, errorThrown) {
@@ -245,7 +418,7 @@ $("#countries").change(function () {
       
                       },
                       error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error");
+                        $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
       
                       },
                     });

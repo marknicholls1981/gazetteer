@@ -69,132 +69,135 @@
       
        <!-- weather modal -->
       
-      <div class="modal" tabindex="-1" id="weathermodal">
+       <div class="modal" tabindex="-1" id="weathermodal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                  <h2 class="modal-title">Weather</h2>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h2 class="modal-title">Weather</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                  </button>
+                    </button>
                 </div>
-                      <div class="modal-body" id="weatherinfo">
-                            
-                      </div>
-                                  
-                                      <div class="modal-footer">
-                                      <button type="button" data-dismiss="modal">Close</button>
-                                        </div>
-                                        </div>
-                                              </div>
+                <div class="modal-body">
+                  <table id="weathertable">
+                    <thead id="weatherinfo"><th></th></thead>
+                    <tbody id ="columns"></tbody>
+
+                  </table>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
                 
         
 
 <!-- country info modal -->
 
-        <div class="modal" tabindex="-1" id="infomodal">
-          <div class="modal-dialog">
-            <div class="modal-content">
-                  <div class="modal-header">
-                       <h2 class="modal-title">Information</h2>
-                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                   </div>
-                  <div class="modal-body info">
-                                <table id="information">
-                                  <tr><td class="summary">Flag : - </td><td id=><img class="flag" ></td></tr> 
+       
 
-                                  <tr><td class="summary">Country : - </td><td id="country"></td></tr>  
-                                  
-                                  
-                                  <tr><td class="summary">Capital : - </td><td id="capital"></td></tr>    
-                                  <tr><td class="summary">Population : - </td><td id="population"></td></tr>    
-                                  <tr><td class="summary">Continent : - </td><td id="continent"></td></tr>    
-                                  <tr><td class="summary">Summary : - </td><td id="summary"></td></tr>    
-                                  <tr><td class="summary">More Info : -</td><td id="moreinfo"><a href="" id="furtherinfo" target ="_blank"></a></td></tr>    
-                                            
-                                              
-                                             
-             
-                                      </table>
-                                    
-                   </div>
-                   <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal">Close</button>
-                  
-                                          </div>
+<div class="modal" tabindex="-1" id="infomodal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+              <div class="container-fluid">
+
+                <div class="row">
+
+<div class="col-sm-6"> <img id="flag" class="flag"></div>
+<div class="col-sm-6"><p class="modal-title" id="country"></p></div>
+                </div>
               </div>
-          </div>
-  
-                  
+
+
+
+             
+                
+                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body info">
+                <table id="information">
+                   
+                    <tr>
+                        <td class="summary">Capital</td>
+                        <td id="capital"></td>
+                    </tr>
+                    <tr>
+                        <td class="summary">Population</td>
+                        <td id="population"></td>
+                    </tr>
+                    <tr>
+                        <td class="summary">Continent</td>
+                        <td id="continent"></td>
+                    </tr>
+                    <tr>
+                        <td class="summary">Summary</td>
+                        <td id="summary"></td>
+                    </tr>
+                    <tr>
+                        <td class="summary">More Info</td>
+                        <td id="moreinfo"><a href="" id="furtherinfo" target ="_blank"></a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
         </div>
+    </div>
+</div>
 
 
 
           <!-- news modal -->
           <div class="modal" tabindex="-1" id="newsmodal">
-            <div class="modal-dialog">
-              <div class="modal-content">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
                     <div class="modal-header">
-                         <h2 class="modal-title">Latest news</h2>
-                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                     </div>
+                        <h2 class="modal-title">Latest news</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body info">
-                      <div class="container-fluid news" id="articles">
-                    
-
-                       
-                           
-                                  
-                 </div>
-
-
-                     <div class="modal-footer">
-                                          <button type="button" data-dismiss="modal">Close</button>
-                    
-                                            </div>
+                        <div class="container-fluid news" id="articles">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-    
-                    
-          </div>
+        </div>
 
 
           <!-- exchange rates modal -->
           <div class="modal" tabindex="-1" id="ratesmodal">
-            <div class="modal-dialog">
-              <div class="modal-content">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
                     <div class="modal-header">
-                         <h2 class="modal-title">Latest exchange rates</h2>
-                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                     </div>
+                        <h2 class="modal-title">Latest exchange rates</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body info">
-                      <div class="container-fluid" id="rates">
-
-                    
-
-                       <p>Anything</p>
-                           
-                                  
-                 </div>
-
-
-                     <div class="modal-footer">
-                                          <button type="button" data-dismiss="modal">Close</button>
-                    
-                                            </div>
+                        <div class="container-fluid" id="rates">
+                            <p>Anything</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-    
-                    
-          </div>
+        </div>
 
           
           

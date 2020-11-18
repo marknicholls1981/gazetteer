@@ -1,12 +1,11 @@
-const apiToken =
-  "pk.eyJ1IjoiY3VzeDE5ODEiLCJhIjoiY2tmZTN1d2VzMDE5MDJ6cGVlcHVvbzV1dCJ9.nhmqapMZZRVeMQZXFOkAQA";
-
 let mymap = L.map('map').setView([0, 0], 1);
 let border;
 let marker;
 let tooltip;
 let weatherButton;
 let ratesButton;
+let dates = []
+let times = []
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -67,6 +66,8 @@ navigator.geolocation.getCurrentPosition((position) => {
 let $select = $("#countries");
 let $articles = $("#articles");
 let $weatherinfo = $('#weatherinfo')
+let $columns = $('#columns')
+
 
 let $rates = $("#rates");
 
@@ -143,6 +144,8 @@ $("#countries").change(function () {
 
               $("#summary").html('Unavailable');
               $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
+              $columns.html("")
+             
              
               
               $("#furtherinfo").removeAttr("href");
@@ -208,6 +211,8 @@ $("#countries").change(function () {
                       },
                       success: function (result) {  
                         $weatherinfo.html("")
+                        $columns.html("")
+                       
                                 
       
                         if (result.status.name == "ok") {
@@ -227,6 +232,8 @@ $("#countries").change(function () {
 
                          if (weatherList < 1){
                           $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
+                          $columns.html("")
+                          
 
 
                          }
@@ -234,7 +241,8 @@ $("#countries").change(function () {
                          else{
                           {
                             for(i=0; i<weatherList.length;i++){
-                              let theDate = new Date(weatherList[i]['dt_txt'])
+                              let theDate = new Date(weatherList[i]['dt'] * 1000)
+                              
                            
 
                             
@@ -246,96 +254,171 @@ let day;
 
 switch(theDate.getDay()){
   case 0:
-    day = "Sunday";
+    day = "Sun";
     break;
   case 1:
-    day = "Monday";
+    day = "Mon";
     break;
   case 2:
-     day = "Tuesday";
+     day = "Tue";
     break;
   case 3:
-    day = "Wednesday";
+    day = "Wed";
     break;
   case 4:
-    day = "Thursday";
+    day = "Thur";
     break;
   case 5:
-    day = "Friday";
+    day = "Fri";
     break;
   case 6:
-    day = "Saturday";
+    day = "Sat";
 
 }
 switch(theDate.getMonth()){
   case 0:
-    month = "January";
+    month = "Jan";
     break;
   case 1:
-    month = "February";
+    month = "Feb";
     break;
   case 2:
-     month = "March";
+     month = "Mar";
     break;
   case 3:
-    month = "April";
+    month = "Apr";
     break;
   case 4:
     month = "May";
     break;
   case 5:
-    month = "June";
+    month = "Jun";
     break;
   case 6:
-    month = "July";
+    month = "Jul";
     case 7:
-      month = "August";
+      month = "Aug";
       break;
     case 8:
-      month = "September";
+      month = "Sep";
       break;
     case 9:
-       month = "October";
+       month = "Oct";
       break;
     case 10:
-      month = "November";
+      month = "Nov";
       break;
     case 11:
-      month = "Decembet";
+      month = "Dec";
     
 
 }
 
+let date = theDate.getDate()
+
+if (date === 1 || date === 21 || date === 31){
+
+  date = date + 'st'
+}
+else if( date === 2 || date === 22) {
+  date = date + 'nd'
+}
+
+else if(date === 3 || date === 23){
+  date = date + 'rd'
+}
+
+else{
+  date = date + 'th'
+}
+
+let hours = theDate.getHours()
+let minutes = theDate.getMinutes()
+let seconds = theDate.getSeconds()
+let weathericon = weatherList[i]['weather'][0]['icon']
+let temperature = weatherList[i]['main']['temp']
+let description = weatherList[i]['weather'][0]['description']
+let newDates;
+let newTimes;
+
+console.log(theDate.getDate())
 
 
 
 
 
-$weatherinfo.append( ` 
-<div class="container-fluid">
-
-<div class="row">
-
-<div class="col-sm-12 weatherrow">
-<table id="information weathertable">                              
-<tr><td>${day} ${theDate.getDate()} ${month} ${theDate.getHours()}:${theDate.getMinutes()}${theDate.getSeconds()}</td><td><img class="weathericon" src ="http://openweathermap.org/img/wn/${weatherList[i]['weather'][0]['icon']}@2x.png"></td> 
-
-
-
-
-<td id="temp" >${weatherList[i]['main']['temp']}°</td>           
-    
-<td></td><td id="weatherdescription" >${weatherList[i]['weather'][0]['description']}</td> 
-</tr>      
+  dates.push(`${day} ${date}`)
+ 
+   
   
 
-</table>
-</div>
-</div>
-</div>
 
-`)
+
+
+
+
+
+
+// $weatherinfo.append( ` 
+// <div class="container-fluid">
+
+// <div class="row">
+
+// <div class="col-sm-12 weatherrow">
+// <table id="information weathertable">                              
+// <tr><td>${day} ${date} ${month} ${hours}:${minutes}${seconds}</td><td><img class="weathericon" src ="http://openweathermap.org/img/wn/${weathericon}@2x.png " style="width:50%;"></td> 
+
+
+
+
+// <td id="temp" >${temperature}°</td>           
+    
+// <td></td><td id="weatherdescription" >${description}</td> 
+// </tr>      
+  
+
+// </table>
+// </div>
+// </div>
+// </div>
+
+// `)
+
                             }
+                            
+
+                            function getUnique(array){
+                              let uniqueArray = [];
+                              
+                              // Loop through array values
+                              for(i=0; i < array.length; i++){
+                                  if(uniqueArray.indexOf(array[i]) === -1) {
+                                      uniqueArray.push(array[i]);
+                                  }
+                              }
+                            
+                              return uniqueArray;
+                            }
+                            newDates = getUnique(dates)
+                           console.log(dates)
+                            
+                           
+                          
+
+                            newDates.forEach(column =>{ 
+                              console.log(column)
+
+                              $columns.append(`<th>${column}</th>`)
+                             
+
+
+                            })
+                            console.log($columns)
+                            
+
+
+                  
+                          
 
 
 
@@ -367,9 +450,9 @@ $weatherinfo.append( `
                             for (i=0;i<10;i++){
                               
                               
-                              $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news"><a class="newsimagelink" src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:308px;height:173px;" alt="No Image Available"></a></div>
+                              $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news"><a class="newsimagelink" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:100%;" alt="No Image Available"></a></div>
                             
-                              <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a><p>${news[i]['description']}</p></div></div>`)
+                              <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a></div></div>`)
 
 
 
@@ -387,10 +470,11 @@ $weatherinfo.append( `
                               currencycode: currencyCode
                             },
                             success: function (result) {
-                              let rates = result.data.rates
-                              console.log(rates)
+                              $rates.html("")
+                              let rates = result.data.rates['AUD']
+                              console.log()
                               //console.log($('#country').text())
-                              $rates.html(rates)
+                              $rates.append(`<p>${rates}</p>`)
 
                              
                              

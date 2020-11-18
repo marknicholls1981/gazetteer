@@ -4,8 +4,6 @@ $executionStartTime = microtime(true) / 1000;
 
 $appid = "4ebd14a3b99b7dfbf2da8e3b9947df56";
 
-// $url = 'api.openweathermap.org/data/2.5/forecast?lat=51&lon=14&APPID=' . $appid;
-
 $url = 'api.openweathermap.org/data/2.5/forecast?lat='. $_REQUEST['lat'] .'&lon=' . $_REQUEST['lon'] .'&units=metric&APPID='. $appid;
 
 $ch = curl_init();

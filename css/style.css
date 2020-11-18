@@ -1,17 +1,17 @@
 html,
 body,
 #map {
-  height: 100% !important;
+  height: calc(100vh - 62px);
   width: 100% !important;
 
   text-align: center;
   padding-top: 60px;
+  box-shadow: 0px 1px 10px #999;
 }
 
 .gaznav {
   background-color: #4783cc;
   color: white;
-  box-shadow: 0px 1px 10px #999;
 }
 
 * {
@@ -31,7 +31,6 @@ table,
 td,
 tr {
   text-align: left;
-  font-size: 1.2em;
 }
 
 .leaflet-tooltip {
@@ -50,7 +49,7 @@ tr {
 }
 
 .info {
-  max-height: calc(100vh - 62px);
+  height: 70vh;
   overflow-y: scroll;
   font-size: 0.25;
 }
@@ -59,30 +58,12 @@ tr {
   height: 25px;
   width: 18px;
 }
-.summary {
-  white-space: nowrap;
-}
-.modal-content,
-#rates {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: auto;
-  background-color: white;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0;
-  height: auto !important;
-  opacity: 1;
-  color: black;
-  font-size: 0.75rem;
-  font-family: "Lato", sans-serif !important;
-  font-weight: bold;
-}
+.summary,
+#summary,
+#capital,
+#population,
+#continent,
+#furtherinfo,
 .modal-header {
   color: black;
 }
@@ -103,10 +84,17 @@ a {
 }
 .news {
   padding: 8px;
-  font-size: 1.3em;
+
   margin: auto;
+  text-align: left;
 
   width: 100% !important;
+}
+
+.news img {
+  box-shadow: 0px 1px 10px #999;
+  margin: auto;
+  display: block;
 }
 .headline:hover,
 .headline2:hover,
@@ -123,13 +111,6 @@ a {
   font-weight: bold;
 }
 
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 1000px;
-    margin: 1.75rem auto;
-  }
-}
-
 #infomodal {
   color: black !important;
 }
@@ -140,8 +121,7 @@ a {
 }
 
 p {
-  font-weight: normal !important;
-  font-size: 0.8rem;
+  font-weight: bold !important;
 }
 
 #weathertable td tr {
@@ -150,4 +130,16 @@ p {
 }
 .weatherrow {
   text-align: center;
+}
+.country {
+  margin: 0 auto;
+}
+.news a {
+  font-size: 0.7em;
+}
+.newsimagelink {
+  margin: 0;
+}
+#weatherinfo th {
+  width: 100px;
 }

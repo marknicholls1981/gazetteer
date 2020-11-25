@@ -66,6 +66,8 @@ tr {
 #furtherinfo,
 .modal-header {
   color: black;
+
+  text-align: left;
 }
 
 .leaflet-container a {
@@ -78,17 +80,19 @@ a {
   font-size: 1.5rem !important;
 }
 
-#weatherinfo td tr {
-  height: auto;
-  border: solid 1px black;
-}
-.news {
+.news,
+.summary {
   padding: 8px;
 
-  margin: auto;
+  /* margin: auto; */
   text-align: left;
 
   width: 100% !important;
+}
+
+#weatherinfo {
+  margin: 0;
+  text-align: left;
 }
 
 .news img {
@@ -122,6 +126,7 @@ a {
 
 p {
   font-weight: bold !important;
+  margin: 5px;
 }
 
 #weathertable td tr {
@@ -142,4 +147,23 @@ p {
 }
 #weatherinfo th {
   width: 100px;
+}
+.modal-content {
+  background-color: lightgrey;
+}
+.description {
+  text-transform: capitalize;
+}
+#furtherinfo {
+  color: blue;
+}
+#rates {
+  font-size: 0.7rem;
+  text-align: left;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  border: solid 1px black;
+  width: 145px;
+  padding: 3px;
 }

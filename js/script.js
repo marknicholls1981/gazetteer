@@ -6,6 +6,13 @@ let weatherButton;
 let ratesButton;
 let dates = []
 let times = []
+let capitalMarker;
+let popup;
+let country;
+let $rates;
+$rates = $("#rates");
+
+
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -69,7 +76,14 @@ let $weatherinfo = $('#weatherinfo')
 let $columns = $('#columns')
 
 
-let $rates = $("#rates");
+
+let $weathertitle = $(".weathertitle")
+let $newstitle = $(".newstitle")
+let $exchangetitle = $(".exchangetitle")
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 $.getJSON("php/countryBorders.geo.json", (data) => {
  
@@ -89,7 +103,9 @@ $.getJSON("php/countryBorders.geo.json", (data) => {
 });
 
 $("#countries").change(function () {
-  $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
+  $articles.html("<p>Sorry, there are no news articles available for this region.</p>")
+
+  $("#furtherinfo").html("Unavailable").css("color", "black !important");
 
   $.ajax({
     url: "php/getCountry.php",
@@ -112,12 +128,14 @@ $("#countries").change(function () {
           "opacity": 0.2
         };
         if (result.data != null) {
-          //console.log(result)
+          
 
           border = L.geoJson(result.data, {
             style: myStyle
           }).addTo(mymap)
           mymap.fitBounds(border.getBounds());
+
+          
          
 
         }
@@ -139,27 +157,35 @@ $("#countries").change(function () {
             
 
             if (result.status.name == "ok") {
-              //console.log(result)
+              
               //console.log($("#countries").val())
 
               $("#summary").html('Unavailable');
-              $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
+              $weatherinfo.html('<p>Sorry, there is no weather forecast currently available for this region.</p>');
+              $rates.html("<p>Sorry, there is no exchange rate information currently available for this region.</p>")
+              
               $columns.html("")
              
              
               
               $("#furtherinfo").removeAttr("href");
-              $("#furtherinfo").html("Unavailable").css("color", "black !important");
-                                     
+              //$("#furtherinfo").html("Unavailable").css("color", "black !important");
+              country = result['data'][0]['countryName']        
               $('#capital').html(result['data'][0]['capital']);
-              $('#country').html(result['data'][0]['countryName']);
-              $('#population').html(result['data'][0]['population']);
+              $('#country').html(country);
+              $('#population').html(numberWithCommas((result['data'][0]['population'])));
               $('#continent').html(result['data'][0]['continentName']);
               let flagcode = $("#countries").val()
               $('.flag').attr("src", `https://www.countryflags.io/${flagcode}/shiny/64.png`)
 
               let currencyCode = result['data'][0]['currencyCode']
               let city = $('#capital').html(result['data'][0]['capital']).text();
+              console.log(city)
+              let cityNoSpaces = city.split(' ').join('')
+              console.log(cityNoSpaces)
+              $weathertitle.html(`<h4>5 day weather forecast for ${city}, ${country}</h4>`)
+              $newstitle.html(`<h4>Latest News for ${city}, ${country}</h4>`)
+              $exchangetitle.html(`<h4>Latest exchange rates for ${country}, ${currencyCode}</h4>`)
 
               
 
@@ -170,9 +196,10 @@ $("#countries").change(function () {
                 dataType: 'json',
                 
                 data: {
-                  city: city
+                  city: cityNoSpaces
                 },
                 success: function (result) {
+                  console.log(result)
 
                 
                   
@@ -183,20 +210,31 @@ $("#countries").change(function () {
                     let weatherlon;
 
                     //console.log(info_array)
+                    
 
                    
                    
                         for(i=0; i < info_array.length; i++){
+
+                          if (mymap.hasLayer(popup)) {
+                            mymap.removeLayer(popup);
+                          }
+
                           if(info_array[i]['countryCode'] ===  $('#countries').val() )
                           
-                          {$("#summary").html(info_array[i]['summary']);
+                          {
+                            $("#summary").html(info_array[i]['summary']);
                           $("#furtherinfo").attr("href", `https://${info_array[i]['wikipediaUrl']}`);
                           $("#furtherinfo").html(info_array[i]['wikipediaUrl']);
-                          weatherlat = result['data'][i]['lat']
-                                               
-                         
-                 
+
+                          weatherlat = result['data'][i]['lat']                
                        weatherlon = result['data'][i]['lng']
+                      thumbNailImage = result['data'][i]['thumbnailImg']
+
+                      popup = L.popup({maxWidth:200}).setLatLng([weatherlat,weatherlon]).setContent(`<h6>${city}, ${country}</h6><img src="${thumbNailImage}"/>`).openOn(mymap)
+                     
+                      //capitalMarker = L.marker([weatherlat,weatherlon]).addTo(mymap).bindPopup(popup).openPopup()
+
                       
                     
                    
@@ -211,223 +249,44 @@ $("#countries").change(function () {
                       },
                       success: function (result) {  
                         $weatherinfo.html("")
-                        $columns.html("")
+                        
                        
                                 
       
                         if (result.status.name == "ok") {
-                          const now = new Date()
-                          const currentYear = now.getFullYear()
-                          const month = now.getMonth()
-                          const day = now.getDay()
-                          const date = now.getDate()
-                         let todaysDate = `${day}-${date}-${month+1}-${currentYear}`
-                         let city = result.data.city['name']
-                         //console.log(todaysDate)
-                         $(".city").html(city)
-
-                        $(".date").html(`${now.toDateString()}`)
-                         weatherList = result.data.list
-                         console.log(weatherList)
-
-                         if (weatherList < 1){
-                          $weatherinfo.html('<h3>Sorry, there is no weather forecast currently available for this region.</h3>');
-                          $columns.html("")
-                          
-
-
+                        
+                         
+                         let weather = result.weather
+                         
+                         if(weather < 1){
+                           $weatherinfo.html("<p>Sorry, there is no weather forecast currently available for this region.</p>")
                          }
-                                          
+
                          else{
-                          {
-                            for(i=0; i<weatherList.length;i++){
-                              let theDate = new Date(weatherList[i]['dt'] * 1000)
+                          for (i=0;i<weather.length;i++){
                               
-                           
-
-                            
-
-
-
-let month;
-let day;
-
-switch(theDate.getDay()){
-  case 0:
-    day = "Sun";
-    break;
-  case 1:
-    day = "Mon";
-    break;
-  case 2:
-     day = "Tue";
-    break;
-  case 3:
-    day = "Wed";
-    break;
-  case 4:
-    day = "Thur";
-    break;
-  case 5:
-    day = "Fri";
-    break;
-  case 6:
-    day = "Sat";
-
-}
-switch(theDate.getMonth()){
-  case 0:
-    month = "Jan";
-    break;
-  case 1:
-    month = "Feb";
-    break;
-  case 2:
-     month = "Mar";
-    break;
-  case 3:
-    month = "Apr";
-    break;
-  case 4:
-    month = "May";
-    break;
-  case 5:
-    month = "Jun";
-    break;
-  case 6:
-    month = "Jul";
-    case 7:
-      month = "Aug";
-      break;
-    case 8:
-      month = "Sep";
-      break;
-    case 9:
-       month = "Oct";
-      break;
-    case 10:
-      month = "Nov";
-      break;
-    case 11:
-      month = "Dec";
-    
-
-}
-
-let date = theDate.getDate()
-
-if (date === 1 || date === 21 || date === 31){
-
-  date = date + 'st'
-}
-else if( date === 2 || date === 22) {
-  date = date + 'nd'
-}
-
-else if(date === 3 || date === 23){
-  date = date + 'rd'
-}
-
-else{
-  date = date + 'th'
-}
-
-let hours = theDate.getHours()
-let minutes = theDate.getMinutes()
-let seconds = theDate.getSeconds()
-let weathericon = weatherList[i]['weather'][0]['icon']
-let temperature = weatherList[i]['main']['temp']
-let description = weatherList[i]['weather'][0]['description']
-let newDates;
-let newTimes;
-
-console.log(theDate.getDate())
-
-
-
-
-
-  dates.push(`${day} ${date}`)
- 
-   
-  
-
-
-
-
-
-
-
-
-// $weatherinfo.append( ` 
-// <div class="container-fluid">
-
-// <div class="row">
-
-// <div class="col-sm-12 weatherrow">
-// <table id="information weathertable">                              
-// <tr><td>${day} ${date} ${month} ${hours}:${minutes}${seconds}</td><td><img class="weathericon" src ="http://openweathermap.org/img/wn/${weathericon}@2x.png " style="width:50%;"></td> 
-
-
-
-
-// <td id="temp" >${temperature}°</td>           
-    
-// <td></td><td id="weatherdescription" >${description}</td> 
-// </tr>      
-  
-
-// </table>
-// </div>
-// </div>
-// </div>
-
-// `)
-
-                            }
-                            
-
-                            function getUnique(array){
-                              let uniqueArray = [];
                               
-                              // Loop through array values
-                              for(i=0; i < array.length; i++){
-                                  if(uniqueArray.indexOf(array[i]) === -1) {
-                                      uniqueArray.push(array[i]);
-                                  }
-                              }
+                            $weatherinfo.append(`<div class="row">
                             
-                              return uniqueArray;
-                            }
-                            newDates = getUnique(dates)
-                           console.log(dates)
-                            
-                           
-                          
+                            <div class="col-sm-3 summary my-auto" id="weatherinfo">${weather[i][0]}</div>
 
-                            newDates.forEach(column =>{ 
-                              console.log(column)
-
-                              $columns.append(`<th>${column}</th>`)
-                             
+                            <div class="col-sm-3 summary"><img src=" http://openweathermap.org/img/wn/${weather[i][3]}@2x.png" style="width:50%;" ></div>
 
 
-                            })
-                            console.log($columns)
-                            
-
-
-                  
-                          
+                      
+                            <div class="col-sm-3 summary my-auto" id="weatherinfo">${weather[i][1]}°</div>
+                            <div class="col-sm-3 summary description my-auto" id="weatherinfo">${weather[i][4]}</div>
+                            </div>`)
 
 
 
-                                         
-  
-  
-                           }
+                          }
+
 
                          }
+
+                                                               
+    
                        
                        
                          $.ajax({
@@ -444,13 +303,13 @@ console.log(theDate.getDate())
                             $articles.html("")
                            if (news.length < 1){
 
-                            $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
+                            $articles.html("<p>Sorry, there are no news articles available for this region.</p>")
                            }
                            else{
                             for (i=0;i<10;i++){
                               
                               
-                              $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news"><a class="newsimagelink" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:100%;" alt="No Image Available"></a></div>
+                              $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news my-auto"><a class="newsimagelink" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:100%;" alt="No Image Available"></a></div>
                             
                               <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a></div></div>`)
 
@@ -470,11 +329,39 @@ console.log(theDate.getDate())
                               currencycode: currencyCode
                             },
                             success: function (result) {
-                              $rates.html("")
-                              let rates = result.data.rates['AUD']
-                              console.log()
-                              //console.log($('#country').text())
-                              $rates.append(`<p>${rates}</p>`)
+                              if(result.data.rates){
+                                 let exchangerates = result.data.rates
+                              // console.log(result)
+
+                             $rates.html("")
+                              
+                              
+                             //console.log(rates)
+                             for (let rate in exchangerates) {
+
+                              
+                                 
+                                 $rates.append(`<div class="row">
+                               <div class="col-sm-6">${rate}</div>
+                               <div class="col-sm-6">${exchangerates[rate].toFixed(2)}</div>
+                               </div>`);
+                               
+
+                                                            
+                             
+                             
+                             }
+                              }
+                              else{
+                               
+                                $rates.html("<p>Sorry, there is no exchange rate information currently available for this region.</p>")
+
+                              }
+
+                             
+
+
+                              
 
                              
                              
@@ -502,7 +389,7 @@ console.log(theDate.getDate())
       
                       },
                       error: function (jqXHR, textStatus, errorThrown) {
-                        $articles.html("<h3>Sorry, there are no news articles available for this region.</h3>")
+                        $articles.html("<p>Sorry, there are no news articles available for this region.</p>")
       
                       },
                     });

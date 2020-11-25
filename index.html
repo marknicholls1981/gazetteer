@@ -73,20 +73,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">Weather</h2>
+                    <h4 class="modal-title weathertitle"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                  <table id="weathertable">
-                    <thead id="weatherinfo"><th></th></thead>
-                    <tbody id ="columns"></tbody>
+                  <div class="div container-fluid" id="weatherinfo">
 
-                  </table>
+
+                  </div>
+                
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal">Close</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@
        
 
 <div class="modal" tabindex="-1" id="infomodal">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
               <div class="container-fluid">
@@ -108,7 +108,7 @@
                 <div class="row">
 
 <div class="col-sm-6"> <img id="flag" class="flag"></div>
-<div class="col-sm-6"><p class="modal-title" id="country"></p></div>
+<div class="col-sm-6"><h4 class="modal-title" id="country"></h4></div>
                 </div>
               </div>
 
@@ -122,29 +122,70 @@
                 </button>
             </div>
             <div class="modal-body info">
-                <table id="information">
-                   
-                    <tr>
-                        <td class="summary">Capital</td>
-                        <td id="capital"></td>
-                    </tr>
-                    <tr>
-                        <td class="summary">Population</td>
-                        <td id="population"></td>
-                    </tr>
-                    <tr>
-                        <td class="summary">Continent</td>
-                        <td id="continent"></td>
-                    </tr>
-                    <tr>
-                        <td class="summary">Summary</td>
-                        <td id="summary"></td>
-                    </tr>
-                    <tr>
-                        <td class="summary">More Info</td>
-                        <td id="moreinfo"><a href="" id="furtherinfo" target ="_blank"></a></td>
-                    </tr>
-                </table>
+
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-6 summary">Capital
+
+                  </div>
+                  <div class="col-sm-6 summary" id="capital">
+
+                  </div>
+                  
+
+
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 summary">Population
+
+                  </div>
+                  <div class="col-sm-6 summary" id="population">
+
+                  </div>
+                  
+
+
+                </div>
+                <div class="row ">
+                  <div class="col-sm-6 summary">Continent
+
+                  </div>
+                  <div class="col-sm-6 summary" id="continent">
+
+                  </div>
+                  
+
+
+                </div>
+                <div class="row ">
+                  <div class="col-sm-6 summary">Summary
+
+                  </div>
+                  <div class="col-sm-6 summary" id="summary">
+
+                  </div>
+                  
+
+
+                </div>
+                <div class="row ">
+                  <div class="col-sm-6 summary">More Info
+
+                  </div>
+                  <div class="col-sm-6 summary " id="moreinfo">
+                    <a href="" id="furtherinfo" target ="_blank"></a>
+
+                  </div>
+                  
+
+
+                </div>
+
+
+
+              </div>
+             
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
@@ -157,10 +198,10 @@
 
           <!-- news modal -->
           <div class="modal" tabindex="-1" id="newsmodal">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 class="modal-title">Latest news</h2>
+                        <h4 class="modal-title newstitle"></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -169,7 +210,7 @@
                         <div class="container-fluid news" id="articles">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal">Close</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
                         </div>
                     </div>
                 </div>
@@ -182,17 +223,17 @@
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 class="modal-title">Latest exchange rates</h2>
+                        <h4 class="modal-title exchangetitle"></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body info">
                         <div class="container-fluid" id="rates">
-                            <p>Anything</p>
+                           
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal">Close</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
                         </div>
                     </div>
                 </div>

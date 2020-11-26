@@ -49,7 +49,7 @@ tr {
 }
 
 .info {
-  height: 70vh;
+  max-height: 70vh;
   overflow-y: scroll;
   font-size: 0.25;
 }
@@ -99,6 +99,7 @@ a {
   box-shadow: 0px 1px 10px #999;
   margin: auto;
   display: block;
+  border-radius: 7px;
 }
 .headline:hover,
 .headline2:hover,
@@ -148,9 +149,7 @@ p {
 #weatherinfo th {
   width: 100px;
 }
-.modal-content {
-  background-color: lightgrey;
-}
+
 .description {
   text-transform: capitalize;
 }
@@ -161,9 +160,17 @@ p {
   font-size: 0.7rem;
   text-align: left;
 }
-.leaflet-popup-content-wrapper {
+.leaflet-popup-content-wrapper,
+.leaflet-tooltip {
   border-radius: 8px;
   border: solid 1px black;
-  width: 145px;
+  width: 200px;
   padding: 3px;
+}
+.weatherrow,
+.exchangerow {
+  border-bottom: solid 1px #bbb;
+}
+.capitalimage {
+  box-shadow: 0px 1px 10px #999;
 }

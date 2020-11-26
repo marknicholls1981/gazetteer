@@ -121,6 +121,7 @@ $("#countries").change(function () {
         if (mymap.hasLayer(border)) {
           mymap.removeLayer(border);
         }
+        
        
         let myStyle = {
           "color": " #b53fe8",
@@ -231,9 +232,7 @@ $("#countries").change(function () {
                        weatherlon = result['data'][i]['lng']
                       thumbNailImage = result['data'][i]['thumbnailImg']
 
-                      popup = L.popup({maxWidth:200}).setLatLng([weatherlat,weatherlon]).setContent(`<h6>${city}, ${country}</h6><img src="${thumbNailImage}"/>`).openOn(mymap)
-                     
-                      //capitalMarker = L.marker([weatherlat,weatherlon]).addTo(mymap).bindPopup(popup).openPopup()
+                     border.bindTooltip(`<h6>${city}, ${country}</h6><img src="${thumbNailImage}" class="capitalimage"/>`)
 
                       
                     
@@ -266,7 +265,7 @@ $("#countries").change(function () {
                           for (i=0;i<weather.length;i++){
                               
                               
-                            $weatherinfo.append(`<div class="row">
+                            $weatherinfo.append(`<div class="row weatherrow">
                             
                             <div class="col-sm-3 summary my-auto" id="weatherinfo">${weather[i][0]}</div>
 
@@ -341,7 +340,7 @@ $("#countries").change(function () {
 
                               
                                  
-                                 $rates.append(`<div class="row">
+                                 $rates.append(`<div class="row exchangerow">
                                <div class="col-sm-6">${rate}</div>
                                <div class="col-sm-6">${exchangerates[rate].toFixed(2)}</div>
                                </div>`);

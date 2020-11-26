@@ -181,9 +181,9 @@ $("#countries").change(function () {
 
               let currencyCode = result['data'][0]['currencyCode']
               let city = $('#capital').html(result['data'][0]['capital']).text();
-              console.log(city)
+              
               let cityNoSpaces = city.split(' ').join('')
-              console.log(cityNoSpaces)
+            
               $weathertitle.html(`<h4>5 day weather forecast for ${city}, ${country}</h4>`)
               $newstitle.html(`<h4>Latest News for ${city}, ${country}</h4>`)
               $exchangetitle.html(`<h4>Latest exchange rates for ${country}, ${currencyCode}</h4>`)
@@ -200,7 +200,7 @@ $("#countries").change(function () {
                   city: cityNoSpaces
                 },
                 success: function (result) {
-                  console.log(result)
+                 
 
                 
                   
@@ -210,16 +210,17 @@ $("#countries").change(function () {
                     let weatherlat;
                     let weatherlon;
 
-                    //console.log(info_array)
-                    
-
+                      
                    
                    
                         for(i=0; i < info_array.length; i++){
+                         
 
                           if (mymap.hasLayer(popup)) {
                             mymap.removeLayer(popup);
                           }
+
+                          
 
                           if(info_array[i]['countryCode'] ===  $('#countries').val() )
                           
@@ -231,8 +232,21 @@ $("#countries").change(function () {
                           weatherlat = result['data'][i]['lat']                
                        weatherlon = result['data'][i]['lng']
                       thumbNailImage = result['data'][i]['thumbnailImg']
+                     
+                      if(thumbNailImage){
+                        border.bindTooltip(`<h6>${city}, ${country}</h6><img src="${thumbNailImage}" class="capitalimage"/>`)
 
-                     border.bindTooltip(`<h6>${city}, ${country}</h6><img src="${thumbNailImage}" class="capitalimage"/>`)
+                      }
+                      else {
+                        border.bindTooltip(`<h6>${city}, ${country}</h6><img src="./images/blank.jpg" class="capitalimage"/>`)
+
+                      }
+                      if(info_array.length < 1){
+                        border.bindTooltip(`<h6>${city}, ${country}</h6><img src="./images/blank.jpg" class="capitalimage"/>`)
+
+                      }
+
+                     
 
                       
                     
@@ -310,7 +324,7 @@ $("#countries").change(function () {
                               
                               $articles.append(`<div class="row articlerow"> <div class="col-sm-6 news my-auto"><a class="newsimagelink" href="${news[i]['urlToImage']}" target="_blank"><img src="${news[i]['urlToImage']}" href="${news[i]['urlToImage']} class="newsimagelink" style="width:100%;" alt="No Image Available"></a></div>
                             
-                              <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a></div></div>`)
+                              <div class="col-sm-6 news  "><a href="${news[i]['url']}"class="headline" target="_blank">${news[i]['title']}</a></div></div></div>`)
 
 
 
@@ -343,7 +357,7 @@ $("#countries").change(function () {
                                  $rates.append(`<div class="row exchangerow">
                                <div class="col-sm-6">${rate}</div>
                                <div class="col-sm-6">${exchangerates[rate].toFixed(2)}</div>
-                               </div>`);
+                               </div></div>`);
                                
 
                                                             

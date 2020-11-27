@@ -1,0 +1,16 @@
+{
+    "name": "PWAConf",
+    "short_name": "PWAConf",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#2FA3EF",
+    "description": "Gazetteer",
+    "theme_color": "#FBFDFF",
+    "icons": [
+      {
+        "src": "./images/globe.png",
+        "sizes": "375x375",
+        "type": "image/png"
+      }
+    ]
+  }

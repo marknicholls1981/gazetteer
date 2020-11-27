@@ -1,6 +1,6 @@
 {
-    "name": "PWAConf",
-    "short_name": "PWAConf",
+    "name": "Gazetteer",
+    "short_name": "Gazetteer",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#2FA3EF",

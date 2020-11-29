@@ -1,3 +1,29 @@
+window.addEventListener("online", handleNetworkChange);
+
+window.addEventListener("offline", handleNetworkChange);
+
+ 
+
+function handleNetworkChange(event) {
+
+                               
+
+                if (navigator.onLine) {
+
+ 
+
+                              
+
+ 
+
+                } else {
+                  alert("You are offline")                    
+
+                }
+
+ 
+
+}
 let mymap = L.map('map').setView([0, 0], 1);
 let border;
 let marker;
@@ -412,7 +438,7 @@ $("#countries").change(function () {
    }
                   }
                   else{
-                    alert("Further information not avaivle.")
+                    alert("Further information not available.")
                   }
                 }
               })
